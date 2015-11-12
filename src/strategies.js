@@ -1,6 +1,5 @@
 'use strict';
 
-var lodash = require('lodash');
 var cheerio = require('cheerio');
 var superagent = require('superagent');
 
@@ -8,22 +7,19 @@ var worldCensusFile = 'data/world-census-data.json';
 var censusData = require('../' + worldCensusFile);
 var gg = require('gender-guess');
 
-var each = lodash.each;
-var isString = lodash.isString;
-
 var Strategies = {
   OWN_DATA: {
     with: function(data) {
       return function(name, cb) {
         if (!data || !data[name]) {
-          return cb(null, new Error('Nothing Found'))
+          return cb(null, new Error('Nothing Found'));
         }
 
         cb({
           source: 'ownData',
           gender: data[name]
         });
-      }
+      };
     }
   },
   CENSUS: {
@@ -31,7 +27,7 @@ var Strategies = {
       var guessed = gg.guess(name);
 
       if (!guessed.gender) {
-        return cb(null, new Error('Nothing Found'))
+        return cb(null, new Error('Nothing Found'));
       }
 
       cb({
@@ -41,7 +37,7 @@ var Strategies = {
     },
     WORLD: function(name, cb) {
       if (!censusData || !censusData[name]) {
-        return cb(null, new Error('Nothing Found'))
+        return cb(null, new Error('Nothing Found'));
       }
 
       cb({
@@ -66,7 +62,7 @@ var Strategies = {
 
           var body = res.body;
           if (!body.gender) {
-            return cb(null, new Error('Noth determined'))
+            return cb(null, new Error('Nothing determined'));
           }
 
           var gender = body.gender === 'male' ? 'M' : 'F';
@@ -97,11 +93,39 @@ var Strategies = {
           }
 
           if (!gender) {
-            return cb(null, new Error('Nothing Found'))
+            return cb(null, new Error('Nothing Found'));
           }
 
           cb({
             source: 'behindthename.com',
+            gender: gender
+          });
+        });
+    },
+    BABYNAMEGUESSER: function(name, cb) {
+      var url = 'http://www.gpeters.com/names/baby-names.php';
+
+      superagent
+        .get(url)
+        .query({
+          name: name
+        })
+        .end(function(err, res) {
+          if (err) {
+            return cb(null, err);
+          }
+
+          var rawHTML = res.text;
+          var regexResults = /It's a (.*)!/g.exec(rawHTML);
+
+          if (!regexResults) {
+            return cb(null, new Error('Nothing Found'));
+          }
+
+          var gender = regexResults[1] === 'boy' ? 'M' : 'F';
+
+          cb({
+            source: 'babynameguesser',
             gender: gender
           });
         });
