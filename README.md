@@ -29,7 +29,7 @@ var customStrategy = function(name, cb) {
  * - An array of different strategies to obtain the gender for a certain first name
  * - Each Strategies has the interface function(name, cb(err, gender)), with gender being an object like {source: 'thesource', gender: 'any string, typicall M or F'}
  * - Sorted by priority, executed consecutively (async.series), first successful match is returned
- * - 5 defaul strategies with
+ * - 5 default strategies, 2 using local data, 3 crawling the web
  */
 var Gendr = GendrFactory.create([
   Strategies.OWN_DATA.with(ownData),//Uses own data, keys have to be lowercase to work properly
