@@ -1,7 +1,7 @@
 {
   "name": "gendr",
   "description": "A lightweight module to determine the gender of a person using various strategies and sources",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "repository": {
     "type": "git",
@@ -9,9 +9,11 @@
   },
   "keywords": [
     "gender",
+    "sex",
     "census",
     "male",
-    "female"
+    "female",
+    "guess"
   ],
   "author": "Markus Ziller <mail.markus.ziller@gmail.com>",
   "license": "MIT",
