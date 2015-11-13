@@ -57,3 +57,15 @@ sampleNames.forEach(function(name) {
   });
 });
 ```
+
+This leads to the following output:
+
+```
+jarjarbinks has gender: {"source":"ownData","gender":"M"}
+Terese has gender: {"source":"us-census-1930-2013","gender":"F"}
+Torbjørn has gender: {"source":"data/world-census-data.json","gender":"M"}
+Andjela has gender: {"source":"babynameguesser","gender":"M"}
+Cristoffer has gender: {"source":"genderize.io","gender":"M"}
+notexisting has gender: {"source":"fallback: ladies first","gender":"F"}
+cookieMonster has gender: {"source":"fallback: ladies first","gender":"F"}
+```
