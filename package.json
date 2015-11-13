@@ -1,7 +1,7 @@
 {
   "name": "gendr",
   "description": "A lightweight module to determine the gender of a person using various strategies and sources",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": false,
   "repository": {
     "type": "git",
