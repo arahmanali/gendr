@@ -1,13 +1,13 @@
 'use strict';
 
-var cheerio = require('cheerio');
-var superagent = require('superagent');
+const cheerio = require('cheerio');
+const superagent = require('superagent');
 
-var worldCensusFile = 'data/world-census-data.json';
-var censusData = require('../' + worldCensusFile);
-var gg = require('gender-guess');
+const worldCensusFile = 'data/world-census-data.json';
+const censusData = require('../' + worldCensusFile);
+const gg = require('gender-guess');
 
-var Strategies = {
+const Strategies = {
   OWN_DATA: {
     with: function(data) {
       return function(name, cb) {
@@ -24,7 +24,7 @@ var Strategies = {
   },
   CENSUS: {
     US: function(name, cb) {
-      var guessed = gg.guess(name);
+      const guessed = gg.guess(name);
 
       if (!guessed || !guessed.gender) {
         return cb(null, new Error('Nothing Found'));
@@ -48,7 +48,7 @@ var Strategies = {
   },
   WEB: {
     GENDERIZE_IO: function(name, cb) {
-      var url = 'https://api.genderize.io';
+      const url = 'https://api.genderize.io';
 
       superagent
         .get(url)
@@ -60,12 +60,12 @@ var Strategies = {
             return cb(null, err);
           }
 
-          var body = res.body;
+          const body = res.body;
           if (!body.gender) {
             return cb(null, new Error('Nothing determined'));
           }
 
-          var gender = body.gender === 'male' ? 'M' : 'F';
+          const gender = body.gender === 'male' ? 'M' : 'F';
 
           cb({
             source: 'genderize.io',
@@ -74,7 +74,7 @@ var Strategies = {
         });
     },
     BEHINDTHENAME: function(name, cb) {
-      var url = 'http://www.behindthename.com/name/' + name;
+      const url = 'http://www.behindthename.com/name/' + name;
 
       superagent
         .get(url)
@@ -83,11 +83,11 @@ var Strategies = {
             return cb(null, err);
           }
 
-          var $ = cheerio.load(res.text);
-          var masculin = $('.masc').html();
-          var feminine = $('.fem').html();
+          const $ = cheerio.load(res.text);
+          const masculin = $('.masc').html();
+          const feminine = $('.fem').html();
 
-          var gender = feminine ? 'F' : null;
+          let gender = feminine ? 'F' : null;
           if (masculin) {
             gender = gender ? 'MF' : 'M';
           }
@@ -103,7 +103,7 @@ var Strategies = {
         });
     },
     BABYNAMEGUESSER: function(name, cb) {
-      var url = 'http://www.gpeters.com/names/baby-names.php';
+      const url = 'http://www.gpeters.com/names/baby-names.php';
 
       superagent
         .get(url)
@@ -115,14 +115,14 @@ var Strategies = {
             return cb(null, err);
           }
 
-          var rawHTML = res.text;
-          var regexResults = /It's a (.*)!/g.exec(rawHTML);
+          const rawHTML = res.text;
+          const regexResults = /It's a (.*)!/g.exec(rawHTML);
 
           if (!regexResults) {
             return cb(null, new Error('Nothing Found'));
           }
 
-          var gender = regexResults[1] === 'boy' ? 'M' : 'F';
+          const gender = regexResults[1] === 'boy' ? 'M' : 'F';
 
           cb({
             source: 'babynameguesser',

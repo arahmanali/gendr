@@ -18,12 +18,12 @@
   "author": "Markus Ziller <mail.markus.ziller@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "lint": "jscs ./src && jshint ./src",
+    "lint": "eslint src/ test/ index.js sample.js ",
     "pre-push": "npm run lint"
   },
   "devDependencies": {
-    "jscs": "^2.1.1",
-    "jshint": "^2.6.3"
+    "eslint": "1.10.x",
+    "eslint-config-airbnb": "1.0.x"
   },
   "dependencies": {
     "superagent": "1.4.0",
