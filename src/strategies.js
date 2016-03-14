@@ -26,7 +26,7 @@ var Strategies = {
     US: function(name, cb) {
       var guessed = gg.guess(name);
 
-      if (!guessed.gender) {
+      if (!guessed || !guessed.gender) {
         return cb(null, new Error('Nothing Found'));
       }
 
